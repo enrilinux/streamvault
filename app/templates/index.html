@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>StreamVault</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-900 text-white flex items-center justify-center h-screen">
+
+<div class="bg-gray-800 p-10 rounded-2xl shadow-2xl w-96">
+
+<h1 class="text-3xl font-bold mb-6 text-center">
+StreamVault
+</h1>
+
+<input
+id="url"
+placeholder="Paste video URL"
+class="w-full p-3 rounded bg-gray-700 mb-4"
+/>
+
+<select id="mode" class="w-full p-3 rounded bg-gray-700 mb-4">
+<option value="video">Video (MP4)</option>
+<option value="audio">Audio (MP3)</option>
+</select>
+
+<button
+id="downloadBtn"
+class="w-full bg-blue-600 hover:bg-blue-700 p-3 rounded font-semibold"
+>
+Download
+</button>
+
+<div id="status" class="mt-6 text-center text-sm"></div>
+
+</div>
+
+<script>
+
+document.getElementById("downloadBtn").addEventListener("click", async () => {
+
+const url = document.getElementById("url").value
+const mode = document.getElementById("mode").value
+const status = document.getElementById("status")
+
+if(!url){
+status.innerHTML = "Insert an URL"
+return
+}
+
+status.innerHTML = "Downloading"
+
+const form = new FormData()
+form.append("url", url)
+form.append("mode", mode)
+
+try{
+
+const res = await fetch("/download",{
+method:"POST",
+body:form
+})
+
+const data = await res.json()
+
+status.innerHTML =
+`Done<br>
+<a href="/file?path=${data.path}" class="text-green-400 underline">
+Download file
+</a>`
+
+}catch(e){
+
+status.innerHTML = "Done"
+
+}
+
+})
+
+</script>
+
+</body>
+</html>

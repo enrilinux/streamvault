@@ -1,0 +1,11 @@
+services:
+
+  streamvault:
+
+    build: .
+
+    ports:
+      - "8087:8000"
+
+    volumes:
+      - ./downloads:/app/downloads
