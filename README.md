@@ -1,6 +1,6 @@
 # Streamvault
 
-Streamvault is a Docker app that uses **yt-dlp** for download videos from YouTube and many other platforms.
+Streamvault is a Docker app that uses **yt-dlp** for download videos from **YouTube** and **many other platforms**.
 
 ## How to install:
 
