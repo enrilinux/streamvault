@@ -1,4 +1,5 @@
 services:
+<<<<<<< HEAD
 
   streamvault:
 
@@ -7,5 +8,11 @@ services:
     ports:
       - "8087:8000"
 
+=======
+  streamvault:
+    image: enrilinux/streamvault:latest
+    ports:
+      - 8087:8000
+>>>>>>> b2d0c6e (second commit)
     volumes:
       - ./downloads:/app/downloads
