@@ -8,17 +8,17 @@ Use Docker run:
 
 ```bash
 docker run -d \
-  --name streamvault \
+  --name webdlp \
   -p 8000:8000 \
   -v ./downloads:/app/downloads \
-  enrilinux/streamvault:latest
+  enrilinux/webdlp:latest
 ```
 
 or use Docker Compose:
 ```yaml
 services:
-  streamvault:
-    image: enrilinux/streamvault:latest
+  webdlp:
+    image: enrilinux/webdlp:latest
     ports:
       - 8000:8000
     volumes:
