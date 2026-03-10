@@ -1,6 +1,8 @@
-# Streamvault
+# WebDLP
 
-Streamvault is a Docker app that uses **yt-dlp** for download videos from **YouTube** and **many other platforms**.
+![Logo](https://raw.githubusercontent.com/enrilinux/webdlp/refs/heads/main/logo.png)
+
+WebDLP is a Docker app that uses **yt-dlp** for download videos from **YouTube** and **many other platforms**.
 
 ## How to install:
 
