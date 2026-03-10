@@ -21,6 +21,10 @@ if not os.path.exists(HISTORY_FILE):
     with open(HISTORY_FILE, "w") as f:
         json.dump([], f)
 
+def write_log(message):
+    with open(LOG_FILE, "a") as f:
+        f.write(f"{datetime.now().strftime('%H:%M:%S')} - {message}\n")        
+
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
