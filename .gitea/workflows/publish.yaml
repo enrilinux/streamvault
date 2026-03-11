@@ -1,4 +1,4 @@
-name: Docker Build
+name: Docker Buildname: Docker Build
 
 on:
   push:
@@ -7,15 +7,39 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: docker
+
+    container:
+      image: node:20
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build Docker image
-        run: |
-          docker build -t myapp:latest .
+      - name: Build docker image
+        run: docker build -t myapp:latest .
 
-      - name: List Docker images
+      - name: Show images
+        run: docker images
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: docker
+
+    container:
+      image: node:20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build docker image
+        run: docker build -t myapp:latest .
+
+      - name: Show images
         run: docker images
