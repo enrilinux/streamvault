@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Checkout codice
         uses: actions/checkout@v4
-      
+
       - name: Install Docker client on Alpine (if using container)
         run: |
           apk update
