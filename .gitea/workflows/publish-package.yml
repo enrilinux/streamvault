@@ -8,16 +8,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: docker:24-git
 
     steps:
       - name: Checkout codice
         uses: actions/checkout@v4
-
-      - name: Install Docker client on Alpine (if using container)
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker.io
-        shell: sh
 
       - name: Login al registry Gitea
         uses: docker/login-action@v3
