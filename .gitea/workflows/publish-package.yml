@@ -15,8 +15,8 @@ jobs:
 
       - name: Install Docker client on Alpine (if using container)
         run: |
-          apk update
-          apk add --no-cache docker
+          sudo apt-get update
+          sudo apt-get install -y docker.io
         shell: sh
 
       - name: Login al registry Gitea
