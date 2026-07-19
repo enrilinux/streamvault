@@ -1,36 +1,53 @@
-name: build-and-push-docker
+# .gitea/workflows/build.yaml
+name: Build and Push Docker Image
 
+# Il workflow viene attivato su push
 on:
   push:
     branches:
-      - main
+      - 'main'
+      - 'master'
+
+# Questa sezione è fondamentale per evitare build quando non necessario
+# Gitea ignorerà automaticamente i commit che contengono queste stringhe [citation:10]
+# Aggiungi "[skip ci]" al tuo messaggio di commit per saltare la build
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
-    container:
-      image: docker:24-git
-
     steps:
-      - name: Checkout codice
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Login al registry Gitea
-        uses: docker/login-action@v3
-        with:
-          registry: gitea.enrilinux.ovh
-          username: ${{ secrets.REGISTRY_USER }}
-          password: ${{ secrets.REGISTRY_PASSWORD }}
+      # Questi due step preparano l'ambiente per build multi-architettura
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
-      - name: Setup Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build e push immagine
+      - name: Log in to Gitea Container Registry
+        uses: docker/login-action@v3
+        with:
+          # IMPORTANTE: Sostituisci con il dominio del tuo Gitea (es. gitea.example.com)
+          registry: gitea.enrilinux.ovh
+          username: ${{ secrets.GITEA_USERNAME }}
+          password: ${{ secrets.GITEA_TOKEN }}
+
+      # Estrae il nome del repository e il tag (commit SHA) per l'immagine
+      - name: Extract metadata
+        id: meta
+        run: |
+          echo "REPO_NAME=$(echo ${GITHUB_REPOSITORY} | awk -F'/' '{print $2}')" >> $GITHUB_OUTPUT
+          echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
+          # IMPORTANTE: Sostituisci "gitea.example.com" con il dominio del tuo Gitea
+          # e "username" con il tuo nome utente o organizzazione
           tags: |
-            gitea.enrilinux.ovh/enrilinux/webdlp:latest
-            gitea.enrilinux.ovh/enrilinux/webdlp:${{ github.sha }}
-
+            gitea.enrilinux.ovh/${{ github.repository_owner }}/${{ steps.meta.outputs.REPO_NAME }}:latest
+            gitea.enrilinux.ovh/${{ github.repository_owner }}/${{ steps.meta.outputs.REPO_NAME }}:${{ steps.meta.outputs.SHORT_SHA }}
